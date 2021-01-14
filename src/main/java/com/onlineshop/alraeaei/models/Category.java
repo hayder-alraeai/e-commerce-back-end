@@ -6,21 +6,21 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Category {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String id;
     private String categoryId;
-    private String productDescription;
-    private String image;
-    private double productPrice;
+    private String categoryName;
+    @OneToMany
+    private List<Product> products;
 }
