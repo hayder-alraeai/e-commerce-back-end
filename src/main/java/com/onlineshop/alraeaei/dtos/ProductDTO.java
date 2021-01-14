@@ -5,8 +5,8 @@ import lombok.Value;
 
 @Value
 public class ProductDTO {
-    private String categoryId;
+    private Category category;
     private String productDescription;
-    private String image;
+    private byte [] image;
     private double productPrice;
 }

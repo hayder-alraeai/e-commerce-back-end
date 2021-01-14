@@ -1,5 +1,6 @@
 package com.onlineshop.alraeaei.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,4 @@ public class Category {
     )
     private String categoryId;
     private String categoryName;
-    @OneToMany
-    private List<Product> products;
 }

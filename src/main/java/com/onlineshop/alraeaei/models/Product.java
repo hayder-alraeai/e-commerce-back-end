@@ -19,8 +19,9 @@ public class Product {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private String id;
-    private String categoryId;
+    @ManyToOne
+    private Category category;
     private String productDescription;
-    private String image;
+    private String imageId;
     private double productPrice;
 }

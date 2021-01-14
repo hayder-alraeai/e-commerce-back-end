@@ -25,15 +25,12 @@ public class CategoryService {
         return categoryRepository.findById(categoryId).orElseThrow();
     }
     public Category addCategory(CategoryDTO categoryDTO){
+        System.out.println(categoryDTO.getCategoryName());
         Category category = objectMapper.convertValue(categoryDTO, Category.class);
         return categoryRepository.save(category);
     }
     public Category updateCategory(CategoryDTO categoryDTO, String categoryId){
         Category category = categoryRepository.getOne(categoryId);
-        if (categoryDTO.getProducts().isEmpty()){
-            category.setCategoryName(categoryDTO.getCategoryName());
-            return categoryRepository.save(category);
-        }
         category = objectMapper.convertValue(categoryDTO, Category.class);
         category.setCategoryId(categoryId);
         return categoryRepository.save(category);
