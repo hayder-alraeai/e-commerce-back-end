@@ -2,11 +2,16 @@ package com.onlineshop.alraeaei.services;
 
 import com.onlineshop.alraeaei.models.Photo;
 import com.onlineshop.alraeaei.repositories.PhotoRepository;
+import javassist.NotFoundException;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
@@ -21,14 +26,23 @@ public class PhotoService {
     }
 
     public String saveImage(MultipartFile image) throws IOException {
-        System.out.println("Original Image Byte Size - " + image.getBytes().length);
         Photo img = new Photo(UUID.randomUUID().toString(), image.getContentType(),
                 compressBytes(image.getBytes()));
         photoRepository.save(img);
         return img.getId();
     }
-    public byte [] getImage(String imageId){
-        return decompressBytes(photoRepository.findById(imageId).get().getImage());
+    public byte [] getImage(String imageId) throws NotFoundException {
+        try {
+            return decompressBytes(photoRepository.findById(imageId).get().getImage());
+        }catch (NoSuchElementException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Image Id " + imageId + " id not found!");
+        }
+    }
+    public void updateImage(String imageId, MultipartFile image){
+
+    }
+    public void deleteImage(String imageId){
+        photoRepository.deleteById(imageId);
     }
 
 

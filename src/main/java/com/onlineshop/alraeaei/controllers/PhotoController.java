@@ -1,5 +1,6 @@
 package com.onlineshop.alraeaei.controllers;
 import com.onlineshop.alraeaei.services.PhotoService;
+import javassist.NotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
@@ -13,7 +14,7 @@ public class PhotoController {
     }
 
     @GetMapping(value = "/{id}", produces =  MediaType.IMAGE_JPEG_VALUE)
-    public byte[] showImage(@PathVariable("id") String id){
+    public byte[] showImage(@PathVariable("id") String id) throws NotFoundException {
         return photoService.getImage(id);
     }
 

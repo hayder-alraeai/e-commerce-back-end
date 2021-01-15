@@ -18,7 +18,9 @@ public class ProductService {
     private final ObjectMapper objectMapper;
     private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository, CategoryService categoryService, CategoryRepository categoryRepository, CategoryService categoryService1,  PhotoService photoService, ObjectMapper objectMapper, CategoryRepository categoryRepository1) {
+    public ProductService(ProductRepository productRepository,
+                          CategoryService categoryService,
+                          CategoryRepository categoryRepository, CategoryService categoryService1,  PhotoService photoService, ObjectMapper objectMapper, CategoryRepository categoryRepository1) {
         this.productRepository = productRepository;
         this.photoService = photoService;
         this.objectMapper = objectMapper;
@@ -44,6 +46,7 @@ public class ProductService {
         return productRepository.save(product);
     }
     public void deleteProduct(String productId){
+        photoService.deleteImage(productRepository.findById(productId).orElseThrow().getImageId());
         productRepository.deleteById(productId);
     }
 }
