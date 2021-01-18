@@ -29,6 +29,11 @@ public class ProductController {
     public Product getProduct(@PathVariable("productId") String productId){
         return productService.getProduct(productId);
     }
+    @GetMapping("/category/{categoryId}")
+    public List<Product> getProductsByCategoryId(@PathVariable("categoryId") String categoryId){
+        System.out.println("get called");
+        return productService.getProductsByCategoryId(categoryId);
+    }
     @PostMapping
     public Product addProduct(@RequestParam("image") MultipartFile image,
                               @RequestParam("categoryId") String categoryId,
@@ -36,9 +41,13 @@ public class ProductController {
                               @RequestParam("productPrice") double productPrice) throws IOException {
         return productService.addProduct(categoryId, productDescription, image, productPrice);
     }
-    @PutMapping("/{productId}")
-    public Product updateProduct(@RequestBody ProductDTO productDTO, @PathVariable("productId") String productId){
-        return productService.updateProduct(productDTO, productId);
+    @PostMapping("/{id}")
+    public Product updateProduct(@PathVariable("id") String id,
+                                 @RequestParam(value = "image", required = false) MultipartFile image,
+                                 @RequestParam("categoryId") String categoryId,
+                                 @RequestParam("productDescription") String productDescription,
+                                 @RequestParam("productPrice") double productPrice) throws IOException {
+        return productService.updateProduct(categoryId, productDescription, image, productPrice, id);
     }
     @DeleteMapping("/{productId}")
     public void deleteProduct(@PathVariable("productId") String productId){

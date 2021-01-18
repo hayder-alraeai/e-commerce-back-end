@@ -5,6 +5,7 @@ import com.onlineshop.alraeaei.models.Category;
 import com.onlineshop.alraeaei.services.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController

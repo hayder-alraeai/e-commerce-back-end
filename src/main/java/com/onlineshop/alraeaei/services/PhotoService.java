@@ -3,6 +3,7 @@ package com.onlineshop.alraeaei.services;
 import com.onlineshop.alraeaei.models.Photo;
 import com.onlineshop.alraeaei.repositories.PhotoRepository;
 import javassist.NotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,11 @@ import java.util.UUID;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-
+@AllArgsConstructor
 @Service
 public class PhotoService {
     private final PhotoRepository photoRepository;
 
-    public PhotoService(PhotoRepository photoRepository) {
-        this.photoRepository = photoRepository;
-    }
 
     public String saveImage(MultipartFile image) throws IOException {
         Photo img = new Photo(UUID.randomUUID().toString(), image.getContentType(),
@@ -38,7 +36,12 @@ public class PhotoService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Image Id " + imageId + " id not found!");
         }
     }
-    public void updateImage(String imageId, MultipartFile image){
+    public String updateImage(String imageId, MultipartFile image) throws IOException {
+        photoRepository.deleteById(imageId);
+        Photo img = new Photo(UUID.randomUUID().toString(), image.getContentType(),
+                compressBytes(image.getBytes()));
+        photoRepository.save(img);
+        return img.getId();
 
     }
     public void deleteImage(String imageId){
