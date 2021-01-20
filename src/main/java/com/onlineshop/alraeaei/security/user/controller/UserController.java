@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
-
+@CrossOrigin("*")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/users")
@@ -31,6 +31,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseAuthenticationModel login(@RequestBody RequestAuthenticationModel requestAuthenticationModel) throws UsernameNotFoundException {
+        System.out.println("hitting me");
         try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     requestAuthenticationModel.getUsername(), requestAuthenticationModel.getPassword()
