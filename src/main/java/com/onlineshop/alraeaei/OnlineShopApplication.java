@@ -2,9 +2,8 @@ package com.onlineshop.alraeaei;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.web.client.RestTemplate;
+import java.util.Date;
+import java.util.UUID;
 
 @SpringBootApplication
 public class OnlineShopApplication {

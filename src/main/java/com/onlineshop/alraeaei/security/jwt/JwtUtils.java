@@ -16,7 +16,7 @@ public class JwtUtils {
     private Claims extractAllClaims(String token){
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
-    private boolean isTokenExpired(String token){
+    public boolean isTokenExpired(String token){
         return extractExpiration(token).before(new Date());
     }
 
@@ -28,7 +28,7 @@ public class JwtUtils {
 
     private String createToken(Map<String, Object> claims, String username) {
         return Jwts.builder().setClaims(claims).setSubject(username).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) //10 days
+                .setExpiration(new Date(System.currentTimeMillis() + 10000 * 60 * 60 * 10)) //10 days
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 

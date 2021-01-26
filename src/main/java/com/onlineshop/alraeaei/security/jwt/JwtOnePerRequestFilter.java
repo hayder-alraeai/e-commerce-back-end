@@ -1,14 +1,17 @@
 package com.onlineshop.alraeaei.security.jwt;
 
 import com.onlineshop.alraeaei.security.user.service.UserService;
+import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,12 +25,15 @@ public class JwtOnePerRequestFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
     private UserService userService;
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, ResponseStatusException {
         String username = null;
         String token = null;
         String authenticationHeader = request.getHeader("Authorization");
         if (authenticationHeader != null && authenticationHeader.startsWith("Bearer ")){
             token = authenticationHeader.substring(7);
+            if (jwtUtils.isTokenExpired(token)){
+                throw new IllegalStateException("token is expired by meeeeeeeee");
+            }
             username = jwtUtils.extractUsername(token);
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){

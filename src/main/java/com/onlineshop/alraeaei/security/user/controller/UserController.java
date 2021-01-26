@@ -8,9 +8,8 @@ import com.onlineshop.alraeaei.security.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +17,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletResponse;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
@@ -31,15 +29,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseAuthenticationModel login(@RequestBody RequestAuthenticationModel requestAuthenticationModel) throws UsernameNotFoundException {
-        System.out.println("hitting me");
-        try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     requestAuthenticationModel.getUsername(), requestAuthenticationModel.getPassword()
             ));
-        }catch (ResponseStatusException e){
-            System.out.println("wrong username or password");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Incorrect username or password");
-        }
         final UserDetails userDetails = userService.loadUserByUsername(requestAuthenticationModel.getUsername());
         final String token = jwtUtils.generateToken(userDetails);
         return new ResponseAuthenticationModel(token);
