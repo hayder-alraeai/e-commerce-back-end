@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onlineshop.alraeaei.dtos.CategoryDTO;
 import com.onlineshop.alraeaei.models.Category;
 import com.onlineshop.alraeaei.repositories.CategoryRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class CategoryService {
        return categoryRepository.findAll();
     }
     public Category getCategory(String categoryId){
-        return categoryRepository.findById(categoryId).orElseThrow();
+        return categoryRepository.findById(categoryId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "This category is not found!"));
     }
     public Category addCategory(CategoryDTO categoryDTO){
         System.out.println(categoryDTO.getCategoryName());

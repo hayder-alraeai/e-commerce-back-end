@@ -34,11 +34,11 @@ public class ProductService {
         return productRepository.findAll();
     }
     public Product getProduct(String productId){
-        return productRepository.findById(productId).orElseThrow();
+        return productRepository.findById(productId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "This product is not found!"));
     }
     public Product addProduct(String categoryId, String productDescription, MultipartFile image, double productPrice) throws IOException {
         Product product = new Product();
-        product.setCategory(categoryRepository.findById(categoryId).orElseThrow());
+        product.setCategory(categoryRepository.findById(categoryId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "This category is not found!")));
         product.setProductDescription(productDescription);
         product.setProductPrice(productPrice);
         product.setImageId(photoService.saveImage(image));
