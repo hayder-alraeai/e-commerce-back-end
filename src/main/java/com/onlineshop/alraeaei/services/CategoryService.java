@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onlineshop.alraeaei.dtos.CategoryDTO;
 import com.onlineshop.alraeaei.models.Category;
 import com.onlineshop.alraeaei.repositories.CategoryRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,15 +12,14 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ObjectMapper objectMapper;
+    private final ProductService productService;
 
-    public CategoryService(CategoryRepository categoryRepository, ObjectMapper objectMapper) {
-        this.categoryRepository = categoryRepository;
-        this.objectMapper = objectMapper;
-    }
+
     public List<Category> getCategories(){
        return categoryRepository.findAll();
     }
@@ -38,6 +38,9 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
     public void deleteCategory(String categoryId){
+        if (!productService.getProductsByCategoryId(categoryId).isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This category cannot be deleted! Move items in this category to another category first!");
+        }
         categoryRepository.deleteById(categoryId);
     }
 

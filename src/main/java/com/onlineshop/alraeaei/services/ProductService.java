@@ -5,6 +5,7 @@ import com.onlineshop.alraeaei.dtos.ProductDTO;
 import com.onlineshop.alraeaei.models.Product;
 import com.onlineshop.alraeaei.repositories.CategoryRepository;
 import com.onlineshop.alraeaei.repositories.ProductRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,22 +15,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@AllArgsConstructor
 @Service
 public class ProductService {
     private final PhotoService photoService;
     private final ProductRepository productRepository;
-    private final ObjectMapper objectMapper;
     private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository,
-                          CategoryService categoryService,
-                          CategoryRepository categoryRepository, CategoryService categoryService1,  PhotoService photoService, ObjectMapper objectMapper, CategoryRepository categoryRepository1) {
-        this.productRepository = productRepository;
-        this.photoService = photoService;
-        this.objectMapper = objectMapper;
-        this.categoryRepository = categoryRepository1;
-    }
+
     public List<Product> getProducts(){
         return productRepository.findAll();
     }
