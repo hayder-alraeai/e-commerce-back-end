@@ -1,7 +1,5 @@
 package com.onlineshop.alraeaei.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.onlineshop.alraeaei.dtos.ProductDTO;
 import com.onlineshop.alraeaei.models.Product;
 import com.onlineshop.alraeaei.repositories.CategoryRepository;
 import com.onlineshop.alraeaei.repositories.ProductRepository;
@@ -13,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
