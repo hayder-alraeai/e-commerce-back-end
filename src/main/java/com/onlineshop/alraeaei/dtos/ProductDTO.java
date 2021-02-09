@@ -9,4 +9,6 @@ public class ProductDTO {
     private String productDescription;
     private byte [] image;
     private double productPrice;
+    private int quantity;
+    private int stock;
 }
