@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -26,5 +27,5 @@ public class Product {
     private double productPrice;
     private int quantity;
     private int stock;
-
+    private Date creationTime;
 }
