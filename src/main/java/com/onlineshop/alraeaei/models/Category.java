@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -22,5 +23,5 @@ public class Category {
     )
     private String categoryId;
     private String categoryName;
-    private String timeStamp;
+    private Date timeStamp = new Date(System.currentTimeMillis());
 }

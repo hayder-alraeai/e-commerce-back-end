@@ -27,5 +27,6 @@ public class Product {
     private double productPrice;
     private int quantity;
     private int stock;
-    private Date creationTime;
+    private Date creationTime = new Date(System.currentTimeMillis());
+
 }
