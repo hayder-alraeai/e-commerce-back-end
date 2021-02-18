@@ -1,8 +1,10 @@
 package com.onlineshop.alraeaei.services;
 
 import com.onlineshop.alraeaei.models.Product;
+import com.onlineshop.alraeaei.models.Review;
 import com.onlineshop.alraeaei.repositories.CategoryRepository;
 import com.onlineshop.alraeaei.repositories.ProductRepository;
+import com.onlineshop.alraeaei.repositories.ReviewRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,13 +20,27 @@ public class ProductService {
     private final PhotoService photoService;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ReviewService reviewService;
 
 
     public List<Product> getProducts(){
-        return productRepository.findAll();
+        return productRepository.findAll().stream()
+                .map(product -> {
+                    List<Review> reviewsByProductId = reviewService.getReviewsByProductId(product.getId());
+                    if (!reviewsByProductId.isEmpty()){
+                        product.setRates(reviewsByProductId.stream().mapToInt(p -> p.getRate()).sum()/reviewsByProductId.size());
+                    }
+                    return product;
+                })
+                .collect(Collectors.toList());
     }
     public Product getProduct(String productId){
-        return productRepository.findById(productId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "This product is not found!"));
+        List<Review> reviewsByProductId = reviewService.getReviewsByProductId(productId);
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "This product is not found!"));
+        if (!reviewsByProductId.isEmpty()){
+            product.setRates(reviewsByProductId.stream().mapToInt(p -> p.getRate()).sum()/reviewsByProductId.size());
+        }
+        return product;
     }
     public Product addProduct(String categoryId, String productDescription, MultipartFile image, double productPrice) throws IOException {
         Product product = new Product();
@@ -45,6 +61,7 @@ public class ProductService {
         return productRepository.save(product);
     }
     public void deleteProduct(String productId){
+        reviewService.deleteAllByProductId(productId);
         photoService.deleteImage(productRepository.findById(productId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Image is not found!")).getImageId());
         productRepository.deleteById(productId);
     }

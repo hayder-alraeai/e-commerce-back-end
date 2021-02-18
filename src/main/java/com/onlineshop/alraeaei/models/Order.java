@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -29,6 +30,9 @@ public class Order {
     String address;
     int zipCode;
     String state;
+    @Enumerated(EnumType.STRING)
+    OrderStatus orderStatus = OrderStatus.ORDERED;
+    Date timeStamp = new Date(System.currentTimeMillis());
 
     public Order(List<OrderProduct> orderProducts, String firstName, String lastName, String email, String address, int zipCode, String state) {
         this.orderProducts = orderProducts;

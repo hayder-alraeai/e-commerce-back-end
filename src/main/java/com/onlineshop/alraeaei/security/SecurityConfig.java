@@ -39,11 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/users/login").permitAll()
                 .antMatchers(HttpMethod.POST,"/users").permitAll()
+                .antMatchers(HttpMethod.POST,"/reviews/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/reviews/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/orders/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/orders/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/products/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/categories/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/images/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/carousel-images/**").permitAll()
                 .anyRequest()
                 .authenticated();
         http.addFilterBefore(onePerRequestFilter, UsernamePasswordAuthenticationFilter.class);
